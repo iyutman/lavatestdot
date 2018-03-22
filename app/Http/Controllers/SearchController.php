@@ -16,7 +16,7 @@ class SearchController extends Controller
 
     public function __construct()
     {
-
+        $this->fecth_direct = env('FECTH_DIRECT', false);
         $this->endpoint = env('ENDPOINT_RAJAONGKIR');
         $this->key = env('KEY_RAJAONGKIR');
 
@@ -24,19 +24,24 @@ class SearchController extends Controller
 
     public function getProvice($id)
     {
-
+        if(!($this->fecth_direct)){
             $provinces_pre1 = Provinces::where('province_id', $id)->first();
             $provinces_pre = array_except($provinces_pre1,['id']);
-
+        } else {
+            $provinces_pre = $this->getCurl('/province?id='.$id);
+        }
             $provinces = ['data' => $provinces_pre];
             return json_encode($provinces);
     }
 
     public function getCity($id)
     {
+        if(!($this->fecth_direct)){
             $citys_pre1 = Citys::where('city_id', $id)->first();
             $citys_pre = array_except($citys_pre1,['id']);
-
+        } else {
+             $citys_pre = $this->getCurl('/city?id='.$id);
+        }
             $citys = ['data' => $citys_pre];
             return json_encode($citys);
     }
@@ -72,5 +77,4 @@ class SearchController extends Controller
           return $data_province->rajaongkir->results;
         }
     }
-
 }
