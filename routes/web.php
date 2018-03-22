@@ -18,4 +18,5 @@ Route::get('/', function () {
 Route::Group(['prefix' => 'search'], function () {
 	Route::get('/provinces/{id}', 'SearchController@getProvice')->name('GetProvice');
 	Route::get('/cities/{id}', 'SearchController@getCity')->name('Getcity');
+	Route::get('/', 'SearchController@index');
 });
